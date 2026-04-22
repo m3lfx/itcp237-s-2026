@@ -3,6 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Item;
+use App\Models\Stock;
+use Storage;
+use Illuminate\Support\Carbon;
+use App\Models\Customer;
+use App\Models\Order;
+use DB;
 
 class ItemController extends Controller
 {
@@ -11,7 +18,14 @@ class ItemController extends Controller
      */
     public function index()
     {
-        //
+        // $items = Item::withWhereHas('stock')->get();
+
+
+        $items = Item::withWhereHas('stock')->orderBy('item_id', 'DESC')->get();
+        foreach ($items as $item) {
+            dump($item);
+        }
+        // dd($items);
     }
 
     /**
@@ -19,7 +33,22 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $item = new Item;
+        $item->description = $request->description;
+        $item->sell_price = $request->sell_price;
+        $item->cost_price = $request->cost_price;
+        $files = $request->file('uploads');
+        $item->img_path = 'storage/images/' . $files->getClientOriginalName();
+        $item->save();
+
+        $stock = new Stock();
+        $stock->item_id = $item->item_id;
+        $stock->quantity = $request->quantity;
+        $stock->save();
+
+
+        Storage::put('public/images/' . $files->getClientOriginalName(), file_get_contents($files));
+        return response()->json(["success" => "item created successfully.", "item" => $item, "status" => 200]);
     }
 
     /**
@@ -27,7 +56,8 @@ class ItemController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $item = Item::with('stock')->where('item_id', $id)->first();
+        return response()->json($item);
     }
 
     /**
@@ -35,7 +65,23 @@ class ItemController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $item = Item::find($id);
+        // dd($request->all(), $id);
+        $item->description = $request->description;
+        $item->sell_price = $request->sell_price;
+        $item->cost_price = $request->cost_price;
+        // $item->image_path = 'default.jpg';
+        $files = $request->file('uploads');
+        $item->img_path = 'storage/images/' . $files->getClientOriginalName();
+        $item->save();
+
+        $stock = Stock::find($id);
+        $stock->item_id = $item->item_id;
+        $stock->quantity = $request->quantity;
+        $stock->save();
+
+        Storage::put('public/images/' . $files->getClientOriginalName(), file_get_contents($files));
+        return response()->json(["success" => "item updated successfully.", "item" => $item, "status" => 200]);
     }
 
     /**
@@ -43,6 +89,20 @@ class ItemController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        if (Item::find($id)) {
+            Stock::destroy($id);
+            Item::destroy($id);
+            $data = array('success' => 'item deleted', 'code' => 200);
+            return response()->json($data);
+        }
+        $data = array('error' => 'item not deleted', 'code' => 400);
+        return response()->json($data);
+    }
+
+    public function getItems()
+    {
+        $items = Item::withWhereHas('stock')->orderBy('item_id', 'DESC')->get();
+
+        return response()->json($items);
     }
 }
