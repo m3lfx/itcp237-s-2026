@@ -11,4 +11,6 @@ Route::get('/user', function (Request $request) {
 
 Route::apiResource('customers', CustomerController::class);
 Route::apiResource('items', ItemController::class);
+Route::post('/items/checkout', [ItemController::class, 'postCheckout'])->name('postCheckout');
+
 // Route::apiResource('dashboard', DashboardController::class);
