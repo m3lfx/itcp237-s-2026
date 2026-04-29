@@ -214,3 +214,174 @@ console.log(mySet.has(1)); // true
 // mySet.delete("foo");
 console.log(mySet.size); // 2
 for (let item of mySet) console.log(item);
+
+// console.log('hello world')
+// var today = new Date();
+// console.log(today.getDate()); //4
+// console.log(today.getMonth()); //
+// console.log(today.getFullYear()); //2020
+// console.log(today.getHours()); //23
+// console.log(today.getMinutes()); //13
+// console.log(today.getSeconds()); //10
+// //number of milliseconds since January 1, 1970, 00:00:00 UTC
+// console.log(today.getTime()); //1432748611392
+// console.log(today.getTimezoneOffset());
+
+// var s = new String("dummy"); //Creates a String object
+// console.log(s); //"dummy"
+// console.log(typeof s); //"object"
+// var nonObject = "1" + "2"; //Create a String primitive
+// console.log(typeof nonObject); //"string"
+// var objString = new String("1" + "2"); //Creates a String object
+// console.log(typeof objString); //"object"
+
+// console.log("Hello".length); //5
+// console.log("Hello".charAt(0)); //"H"
+// console.log("Hello".charAt(1)); //"e"
+// console.log("Hello".indexOf("e")); //1
+// console.log("Hello".lastIndexOf("l")); //3
+// console.log("Hello".startsWith("H")); //true
+// console.log("Hello".endsWith("o")); //true
+// console.log("Hello".includes("X")); //false
+
+// var splitStringByWords = "Hello World".split(" ");
+// console.log(splitStringByWords); //["Hello", "World"]
+// var splitStringByChars = "Hello World".split("");
+// console.log(splitStringByChars); //["H", "e", "l", "l", "o", " ","W", "o", "r", "l", "d"]
+// console.log("lowercasestring".toUpperCase()); //"LOWERCASESTRING"
+// console.log("UPPPERCASESTRING".toLowerCase());
+// //"upppercasestring"
+// console.log("There are no spaces in the end           ".trim());
+
+// var a; //declares a variable but its undefined
+// var b = 0;
+// console.log(b); //0
+// console.log(a); //undefined
+// console.log(a + b)
+
+// console.log(true && true); // true AND true returns true
+// console.log(true && false);// true AND false returns false
+// console.log(false && true);// false AND true returns false
+// console.log("Foo" && "Bar");// Foo(true) AND Bar(true) returns Bar
+// console.log(false && "Foo");// false && Foo(true) returns false
+// console.log("Foo" && false);// Foo(true) && false returns false
+// console.log(false && (1 == 2));
+
+// console.log(0 && "Foo"); //First operand is falsy - return it
+// console.log("Foo" && "Bar" && "bar2"); //First operand is truthy, return the second operand
+// console.log(0 || "Foo"); //First operand is falsy - return second operand
+// console.log(function () { } || "Bar"); //First operand is truthy, return it
+// console.log(['10', '2'] || false);
+
+// function greeting(name) {
+//     // if (name === undefined) {
+//     //     names = "john"
+//     // }
+
+//     names = name || "John";
+//     console.log(name);
+//     // console.log("Hello " + ${names});
+//     console.log(`Hello ${names}`);
+// }
+// greeting("Johnson"); // alerts "Hi Johnson";
+// greeting();
+
+// function isAllowedToDrive(age) {
+//     if (age > 21) {
+//         return true;
+//     } else {
+//         return false;
+//     }
+
+// }
+// console.log(isAllowedToDrive(22));
+
+// function sayDay(day) {
+//     switch (day) {
+//         case 1: console.log("Sunday");
+//             break;
+//         case 2: console.log("Monday");
+//             break;
+//         default:
+//             console.log("We live in a binary world. Go to Pluto");
+//     }
+// }
+// sayDay(1) //Sunday
+// sayDay(3)
+
+
+// c = add(1, 2);
+// function add(a, b) {
+//     return a + b;
+// }
+
+
+
+// console.log(c)
+
+// const add = (a, b) => a + b;
+
+// c = add(1, 9);
+
+
+// function changeCase(val) {
+//     return val.toUpperCase();
+// }
+// function demofunc(a, passfunction) {
+//     console.log(passfunction(a));
+// }
+// demofunc("smallcase", changeCase);
+
+// const obj = {
+//     name: "mike",
+//     address: ['address1', "address2"],
+//     phone: {
+//         phone1: "9999",
+//         phone2: "8888",
+//     },
+//     zip: function func1() {
+//         return '1456'
+//     }
+// }
+// console.log(obj.name)
+// console.log(obj.phone.phone2)
+// console.log(obj.zip())
+// console.log(obj.address[1])
+
+var validateDataForAge = data => {
+    person = data();
+    console.log(person.age);
+    if (person.age < 1 || person.age > 99) {
+        return true;
+    } else {
+        return false;
+    }
+};
+var errorHandlerForAge = error => console.log(error || "Error while processing age")
+
+// console.log("Error while processing age");
+function parseRequest(data, validateData, errorHandler) {
+    var error = validateData(data);
+    if (!error) {
+        console.log("no errors");
+    } else {
+        errorHandler();
+    }
+}
+var generateDataForScientist = () => {
+    return {
+        name: "Albert Einstein",
+        age: Math.floor(Math.random() * (100 - 1)) + 1,
+    };
+};
+var generateDataForComposer = () => {
+    return {
+        name: "JS Bach",
+        // age: Math.floor(Math.random() * (100)) + 1,
+        age: 111
+    };
+};
+parseRequest(generateDataForScientist, validateDataForAge,
+    errorHandlerForAge);
+parseRequest(generateDataForComposer, validateDataForAge,
+    errorHandlerForAge);
