@@ -23,10 +23,11 @@ class ItemController extends Controller
 
 
         $items = Item::withWhereHas('stock')->orderBy('item_id', 'DESC')->get();
-        foreach ($items as $item) {
-            dump($item);
-        }
+        // foreach ($items as $item) {
+        //     dump($item);
+        // }
         // dd($items);
+        return response()->json($items);
     }
 
     /**
@@ -154,7 +155,8 @@ class ItemController extends Controller
                         'item_id' => $item['item_id'],
                     ]);
 
-                $stock = Stock::find($item['item_id']);
+                $stock = Stock::find($item['item_id'], "*");
+                // dd((int)$stock->quantity);
                 $stock->quantity = $stock->quantity - $item['quantity'];
                 $stock->save();
             }

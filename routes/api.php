@@ -9,8 +9,11 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::apiResource('customers', CustomerController::class);
-Route::apiResource('items', ItemController::class);
-Route::post('/items/checkout', [ItemController::class, 'postCheckout'])->name('postCheckout');
+
+Route::prefix('v1')->group(function () {
+    Route::apiResource('customers', CustomerController::class);
+    Route::apiResource('items', ItemController::class);
+    Route::post('/items/checkout', [ItemController::class, 'postCheckout'])->name('postCheckout');
+});
 
 // Route::apiResource('dashboard', DashboardController::class);
